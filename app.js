@@ -1,13 +1,21 @@
-var http = require('http');
-
-var server = http.createServer(function(request, response) {
-
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World!");
-
+var restify = require('restify');
+ 
+const server = restify.createServer({
+  name: 'myapp',
+  version: '1.0.0'
 });
-
-var port = process.env.PORT || 1337;
-server.listen(port);
-
-console.log("Server running at http://localhost:%d", port);
+ 
+server.use(restify.plugins.acceptParser(server.acceptable));
+server.use(restify.plugins.queryParser());
+server.use(restify.plugins.bodyParser());
+ 
+server.get('/echo/:name', function (req, res, next) {
+  res.send(req.params);
+   response.writeHead(200, {"Content-Type": "text/plain"});
+    response.end("Hello World!!");
+  return next();
+});
+ 
+server.listen(8080, function () {
+  console.log('%s listening at %s', server.name, server.url);
+});
