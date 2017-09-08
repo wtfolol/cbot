@@ -1,21 +1,15 @@
-var restify = require('restify');
- 
-const server = restify.createServer({
-  name: 'myapp',
-  version: '1.0.0'
+var builder = require('botbuilder');
+
+// Create chat connector for communicating with the Bot Framework Service
+var connector = new builder.ChatConnector({
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
- 
-server.use(restify.plugins.acceptParser(server.acceptable));
-server.use(restify.plugins.queryParser());
-server.use(restify.plugins.bodyParser());
- 
-server.get('/echo/:name', function (req, res, next) {
-  res.send(req.params);
-   response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World!!");
-  return next();
-});
- 
-server.listen(8080, function () {
-  console.log('%s listening at %s', server.name, server.url);
+
+// Listen for messages from users 
+server.post('/api/messages', connector.listen());
+
+// Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
+var bot = new builder.UniversalBot(connector, function (session) {
+    session.send("You said: %s", session.message.text);
 });
