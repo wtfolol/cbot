@@ -3,11 +3,6 @@ var restify = require('restify');
 
 // Setup Restify Server
 var server = restify.createServer();
-server.get('/', function(req, res, next) {
-     res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Hello World!");
-});
-
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId:'311fc6b0-685b-4fd0-b49e-c77e46008777',
