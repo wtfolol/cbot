@@ -7,6 +7,7 @@ var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var msg = require('./text.js');
 
 
 // Setup Restify Server
@@ -75,8 +76,9 @@ function createCard(selectedCardName, session) {
 }
 
 function createHeroCard(session) {
+
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card '+server.url)
+        .title('BotFramework Hero Card '+ msg)
         .subtitle('Your bots — wherever your users are talking')
         .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
         .images([
