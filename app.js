@@ -54,7 +54,7 @@ var CardNames = [HeroCardName, ThumbnailCardName, ReceiptCardName, SigninCardNam
 function createCard(selectedCardName, session) {
     switch (selectedCardName) {
         case HeroCardName:
-            return (session);
+            return createHeroCard(session);
         case ThumbnailCardName:
             return createThumbnailCard(session);
         case ReceiptCardName:
@@ -76,7 +76,7 @@ function createCard(selectedCardName, session) {
 
 function createHeroCard(session) {
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card sdasd')
+        .title('BotFramework Hero Card '+server.url)
         .subtitle('Your bots — wherever your users are talking')
         .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
         .images([
