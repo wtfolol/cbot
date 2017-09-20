@@ -76,7 +76,7 @@ function createCard(selectedCardName, session) {
 
 function createHeroCard(session) {
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card %s',server.url)
+        .title('BotFramework Hero Card sdasd')
         .subtitle('Your bots — wherever your users are talking')
         .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
         .images([
