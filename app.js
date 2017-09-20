@@ -172,7 +172,7 @@ function updatess(session){
     // If modifying these scopes, delete your previously saved credentials
     // at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
     var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-    var TOKEN_DIR = 'https://github.com/wtfolol/cbot';
+    var TOKEN_DIR = 'https://github.com/wtfolol/cbot/';
     var TOKEN_PATH = TOKEN_DIR + 'quickstart.json';
     var array = ['wtf','abed'];
     
