@@ -192,26 +192,16 @@ function updatess(auth) {
           var row = rows[i];
           console.log(row.join(", "));
         }
-        return new builder.updatess(session)
-        .title('I am your father')
-        .subtitle('Star Wars: Episode V - The Empire Strikes Back')
-        .text('test 1,3,2.'+row[0])
-        .image(builder.CardImage.create(session, 'https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'))
-        .media([
-            { url: 'http://www.wavlist.com/movies/004/father.wav' }
-        ])
-        .buttons([
-            builder.CardAction.openUrl(session, 'https://en.wikipedia.org/wiki/The_Empire_Strikes_Back', 'Read More')
-        ]);
-      }
+        return session.send(row[0]);
+    }
       setTimeout(myFunc, 15000, 'funky');
     });
-  }
+}
   
   function myFunc(arg) {
     console.log(`arg was => ${arg}`); 
   }
   
   authentication.authenticate().then((auth)=>{
-      getData(auth);
+    updatess(auth);
   });

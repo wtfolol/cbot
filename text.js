@@ -1,7 +1,7 @@
       var fs = require('fs');
 
  // Load client secrets from a local file.
-    fs.readFile('./client_secret.json', function(err, content) {
+    fs.readFile('./client_secret.json', function processClientSecrets(err, content) {
       if (err) {
         console.log('Error loading client secret file: ' + err);
         setTimeout(myFunc, 15000, 'funky');
@@ -10,7 +10,7 @@
       // Google Sheets API.
       else{
       var message = content;
-      console.log(content);
+      console.log(message);
       setTimeout(myFunc, 15000, 'funky');
       }
     })
@@ -21,3 +21,4 @@
         console.log(`arg was => ${arg}`);
       }
     
+    module.exports = message;
