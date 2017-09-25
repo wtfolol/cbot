@@ -3,11 +3,8 @@ require('dotenv-extended').load();
 
 var builder = require('botbuilder');
 var restify = require('restify');
-var fs = require('fs');
-var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-var msg = require('./text.js');
 let authentication = require("./authentication");
 
 // Setup Restify Server
@@ -49,7 +46,7 @@ var SigninCardName = 'Sign-in card';
 var AnimationCardName = "Animation card";
 var VideoCardName = "Video card";
 var AudioCardName = "Audio card";
-var UpdateSs = "Update ss"
+var UpdateSs = "Update ss";
 var CardNames = [HeroCardName, ThumbnailCardName, ReceiptCardName, SigninCardName, AnimationCardName, VideoCardName, AudioCardName,UpdateSs];
 
 function createCard(selectedCardName, session) {
@@ -171,4 +168,4 @@ function createAudioCard(session) {
         .buttons([
             builder.CardAction.openUrl(session, 'https://en.wikipedia.org/wiki/The_Empire_Strikes_Back', 'Read More')
         ]);
-}
+}   
