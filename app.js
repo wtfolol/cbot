@@ -8,7 +8,7 @@ var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var msg = require('./text.js');
-
+let authentication = require("./authentication");
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -173,156 +173,45 @@ function createAudioCard(session) {
         ]);
 }
 
-function updatess(session){
-    // If modifying these scopes, delete your previously saved credentials
-    // at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
-    var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-    var TOKEN_PATH = './quickstart.json';
-    var array = ['wtf','abed'];
-    
-    // Load client secrets from a local file.
-    fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+function updatess(auth) {
+    var sheets = google.sheets('v4');
+    sheets.spreadsheets.values.get({
+      auth: auth,
+      spreadsheetId: '15M6lPILyUsc4o26ZtnTY6HvJM5aBix4VqR76fh1ftXU',
+      range: 'Sheet1!A2:C', //Change Sheet1 if your worksheet's name is something else
+    }, (err, response) => {
       if (err) {
-        console.log('Error loading client secret file: ' + err);
+        console.log('The API returned an error: ' + err);
         return;
+      } 
+      var rows = response.values;
+      if (rows.length === 0) {
+        console.log('No data found.');
+      } else {
+        for (var i = 0; i < rows.length; i++) {
+          var row = rows[i];
+          console.log(row.join(", "));
+        }
+        return new builder.updatess(session)
+        .title('I am your father')
+        .subtitle('Star Wars: Episode V - The Empire Strikes Back')
+        .text('test 1,3,2.'+row[0])
+        .image(builder.CardImage.create(session, 'https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'))
+        .media([
+            { url: 'http://www.wavlist.com/movies/004/father.wav' }
+        ])
+        .buttons([
+            builder.CardAction.openUrl(session, 'https://en.wikipedia.org/wiki/The_Empire_Strikes_Back', 'Read More')
+        ]);
       }
-      // Authorize a client with the loaded credentials, then call the
-      // Google Sheets API.
-      authorize(JSON.parse(content), appendData);
+      setTimeout(myFunc, 15000, 'funky');
     });
-    
-    /**
-     * Create an OAuth2 client with the given credentials, and then execute the
-     * given callback function.
-     *
-     * @param {Object} credentials The authorization client credentials.
-     * @param {function} callback The callback to call with the authorized client.
-     */
-    function authorize(credentials, callback) {
-      var clientSecret = credentials.installed.client_secret;
-      var clientId = credentials.installed.client_id;
-      var redirectUrl = credentials.installed.redirect_uris[0];
-      var auth = new googleAuth();
-      var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-    
-      // Check if we have previously stored a token.
-      fs.readFile(TOKEN_PATH, function(err, token) {
-        if (err) {
-          getNewToken(oauth2Client, callback);
-        } else {
-          oauth2Client.credentials = JSON.parse(token);
-          callback(oauth2Client);
-        }
-      });
-    }
-    
-    /**
-     * Get and store new token after prompting for user authorization, and then
-     * execute the given callback with the authorized OAuth2 client.
-     *
-     * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
-     * @param {getEventsCallback} callback The callback to call with the authorized
-     *     client.
-     */
-    function getNewToken(oauth2Client, callback) {
-      var authUrl = oauth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES
-      });
-      console.log('Authorize this app by visiting this url: ', authUrl);
-      var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-      });
-      rl.question('Enter the code from that page here: ', function(code) {
-        rl.close();
-        oauth2Client.getToken(code, function(err, token) {
-          if (err) {
-            console.log('Error while trying to retrieve access token', err);
-            return;
-          }
-          oauth2Client.credentials = token;
-          storeToken(token);
-          callback(oauth2Client);
-        });
-      });
-    }
-    
-    /**
-     * Store token to disk be used in later program executions.
-     *
-     * @param {Object} token The token to store to disk.
-     */
-    function storeToken(token) {
-      try {
-        fs.mkdirSync(TOKEN_DIR);
-      } catch (err) {
-        if (err.code != 'EEXIST') {
-          throw err;
-        }
-      }
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token));
-      console.log('Token stored to ' + TOKEN_PATH);
-    }
-    
-    /**
-     * Print the names and majors of students in a sample spreadsheet:
-     * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-     */
-    function listMajors(auth) {
-      var sheets = google.sheets('v4');
-      sheets.spreadsheets.values.get({
-        auth: auth,
-        spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-        range: 'Class Data!A2:E',
-      }, function(err, response) {
-        if (err) {
-          console.log('The API returned an error: ' + err);
-          return;
-        }
-        var rows = response.values;
-        if (rows.length == 0) {
-          console.log('No data found.');
-        } else {
-          console.log('Name, Major:');
-          for (var i = 0; i < rows.length; i++) {
-            var row = rows[i];
-            // Print columns A and E, which correspond to indices 0 and 4.
-            console.log('%s, %s', row[0], row[4]);
-          }
-        }
-      });
-    }
-    
-    function appendData(auth) {
-      var sheets = google.sheets('v4');
-      sheets.spreadsheets.values.append({
-          auth: auth,
-        spreadsheetId: '15M6lPILyUsc4o26ZtnTY6HvJM5aBix4VqR76fh1ftXU',
-        range: 'Sheet1!A7:B7', //Change Sheet1 if your worksheet's name is something else
-        valueInputOption: "USER_ENTERED",
-        resource: {
-          values: [array]
-        }
-      }, (err, response) => {
-        if (err) {
-          console.log('The API returned an error: ' + err);
-          setTimeout(myFunc, 15000, 'funky');
-          return;
-        } else {
-            console.log("Appended");
-            return new builder.ThumbnailCard(session)
-            .title('Updated Your Order')
-            .subtitle('Your order has been submitted')
-            .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
-            .images([
-                builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework/', 'Get Started')
-            ]);
-            setTimeout(myFunc, 15000, 'funky');
-        }
-      });
-    }
-    }
+  }
+  
+  function myFunc(arg) {
+    console.log(`arg was => ${arg}`); 
+  }
+  
+  authentication.authenticate().then((auth)=>{
+      getData(auth);
+  });

@@ -2,9 +2,7 @@ let fs = require('fs');
 let readline = require('readline');
 let googleAuth = require('google-auth-library');
 
-let SCOPES = ['https://www.googleapis.com/auth/spreadsheets']; //you can add more scopes according to your permission need. But in case you chang the scope, make sure you deleted the ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json file
-var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/desktop/cbot/'; //the directory where we're going to save the token
-const TOKEN_PATH = TOKEN_DIR + 'quickstart.json'; //the file which will contain the token
+const TOKEN_PATH ='./quickstart.json'; //the file which will contain the token
 
 class Authentication {
   authenticate(){
