@@ -6,7 +6,9 @@ var restify = require('restify');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 let authentication = require("./authentication");
-
+var row;
+var array;
+var hello = [];
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -34,7 +36,8 @@ var bot = new builder.UniversalBot(connector, [
         var card = createCard(selectedCardName, session);
 
         // attach the card to the reply message
-        var msg = new builder.Message(session).addAttachment(card);
+        var msg = new builder.Message(session).addAttachment(card);S
+        session.send(msg);
         session.send(msg);
     }
 ]);
@@ -46,8 +49,7 @@ var SigninCardName = 'Sign-in card';
 var AnimationCardName = "Animation card";
 var VideoCardName = "Video card";
 var AudioCardName = "Audio card";
-var UpdateSs = "Update ss";
-var CardNames = [HeroCardName, ThumbnailCardName, ReceiptCardName, SigninCardName, AnimationCardName, VideoCardName, AudioCardName,UpdateSs];
+var CardNames = [HeroCardName, ThumbnailCardName, ReceiptCardName, SigninCardName, AnimationCardName, VideoCardName, AudioCardName];
 
 function createCard(selectedCardName, session) {
     switch (selectedCardName) {
@@ -65,8 +67,6 @@ function createCard(selectedCardName, session) {
             return createVideoCard(session);
         case AudioCardName:
             return createAudioCard(session);
-        case UpdateSs:
-            return getauth(session);
         default:
             return createHeroCard(session);
     }
@@ -75,7 +75,7 @@ function createCard(selectedCardName, session) {
 function createHeroCard(session) {
 
     return new builder.HeroCard(session)
-        .title('BotFramework Hero Card '+ msg)
+        .title('BotFramework Hero Card ')
         .subtitle('Your bots — wherever your users are talking')
         .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
         .images([
@@ -90,16 +90,19 @@ function createHeroCard(session) {
 }
 
 function createThumbnailCard(session) {
-    return new builder.ThumbnailCard(session)
-        .title('BotFramework Thumbnail Card')
-        .subtitle('Your bots — wherever your users are talking')
-        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
-        .images([
-            builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
-        ])
-        .buttons([
-            builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework/', 'Get Started')
-        ]);
+    var cards = new builder.ThumbnailCard(session)
+    .title('BotFramework Thumbnail Card')
+    .subtitle('Your bots — wherever your users are talking')
+    .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+    .images([
+        builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+    ])
+    .buttons([
+        builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework/', 'Get Started')
+    ]);
+    for(i=0;i<2;i++){
+    return cards;
+}
 }
 
 var order = 1234;
@@ -164,8 +167,7 @@ function createAudioCard(session) {
         .image(builder.CardImage.create(session, 'https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'))
         .media([
             { url: 'http://www.wavlist.com/movies/004/father.wav' }
-        ])
-        .buttons([
+        ])        .buttons([
             builder.CardAction.openUrl(session, 'https://en.wikipedia.org/wiki/The_Empire_Strikes_Back', 'Read More')
         ]);
 }   
@@ -173,8 +175,22 @@ function createAudioCard(session) {
 function getauth(session){
     authentication.authenticate().then((auth)=>{
         updatess(auth);
-        return session.send(row[0]);
       });
+      if(hello.length>0){
+      return new builder.ThumbnailCard(session)
+      .title('BotFramework Thumbnail Card')
+      .subtitle('Your bots — wherever your users are talking')
+      .text('asd')
+      .images([
+          builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+      ])
+      .buttons([
+          builder.CardAction.openUrl(session, 'https://docs.microsoft.com/bot-framework/', 'Get Started')
+      ]);
+    }
+    else{
+         session.send('test');
+    }
 
 }
 function updatess(auth) {
@@ -186,16 +202,37 @@ function updatess(auth) {
     }, (err, response) => {
       if (err) {
         console.log('The API returned an error: ' + err);
-        return;
       } 
       var rows = response.values;
       if (rows.length === 0) {
         console.log('No data found.');
       } else {
         for (var i = 0; i < rows.length; i++) {
-          var row = rows[i];
+          row = rows[i];
+          hello.push(row.join(", ")) ;
           console.log(row.join(", "));
         }
     }
     });
 }
+
+function appendData(auth) {
+    var sheets = google.sheets('v4');
+    sheets.spreadsheets.values.append({
+      auth: auth,
+      spreadsheetId: '15M6lPILyUsc4o26ZtnTY6HvJM5aBix4VqR76fh1ftXU',
+      range: 'sheet1!A2:C', //Change Sheet1 if your worksheet's name is something else
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [ hello ]
+      }
+    }, (err, response) => {
+      if (err) {
+        console.log('The API returned an error: ' + err);
+        return session.send('error');
+      } else {
+            session.send("succesfully updated =D");
+          console.log("Appended");
+      }
+    });
+  }

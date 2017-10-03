@@ -32,10 +32,6 @@ function myFunc(arg) {
 authentication.authenticate().then((auth)=>{
     getData(auth);
 });
-
-let google = require('googleapis');
-let authentication = require("./authentication");
- 
  
 function appendData(auth) {
   var sheets = google.sheets('v4');
@@ -56,7 +52,3 @@ function appendData(auth) {
     }
   });
 }
- 
-authentication.authenticate().then((auth)=>{
-    appendData(auth);
-});
