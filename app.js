@@ -36,7 +36,7 @@ var bot = new builder.UniversalBot(connector, [
         var card = createCard(selectedCardName, session);
 
         // attach the card to the reply message
-        var msg = new builder.Message(session).addAttachment(card);S
+        var msg = new builder.Message(session).addAttachment(card);
         session.send(msg);
         session.send(msg);
     }
