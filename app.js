@@ -17,8 +17,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 // Create chat bot and listen to messages
 var connector = new builder.ChatConnector({
-    appId: '311fc6b0-685b-4fd0-b49e-c77e46008777',
-    appPassword: '215tbbjeUvDHK0cP1FFs9px'
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 server.post('/api/messages', connector.listen());
 
@@ -237,3 +237,27 @@ function appendData(auth) {
       }
     });
   }
+
+  bot.dialog('showShirts', function (session) {
+    var msg = new builder.Message(session);
+    msg.attachmentLayout(builder.AttachmentLayout.carousel)
+    msg.attachments([
+        new builder.HeroCard(session)
+            .title("Classic White T-Shirt")
+            .subtitle("100% Soft and Luxurious Cotton")
+            .text("Price is $25 and carried in sizes (S, M, L, and XL)")
+            .images([builder.CardImage.create(session, 'http://petersapparel.parseapp.com/img/whiteshirt.png')])
+            .buttons([
+                builder.CardAction.imBack(session, "buy classic white t-shirt", "Buy")
+            ]),
+        new builder.HeroCard(session)
+            .title("Classic Gray T-Shirt")
+            .subtitle("100% Soft and Luxurious Cotton")
+            .text("Price is $25 and carried in sizes (S, M, L, and XL)")
+            .images([builder.CardImage.create(session, 'http://petersapparel.parseapp.com/img/grayshirt.png')])
+            .buttons([
+                builder.CardAction.imBack(session, "buy classic gray t-shirt", "Buy")
+            ])
+    ]);
+    session.send(msg).endDialog();
+}).triggerAction({ matches: /^(show|list)/i });
