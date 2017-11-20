@@ -2,7 +2,8 @@ var builder = require('botbuilder');
 var restify = require('restify');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-let authentication = require("https://github.com/wtfolol/cbot/blob/master/authentication.js");
+let authentication ='https://rawgit.com/wtfolol/cbot/master/quickstart.json'; 
+//require("./authentication");
 var bookingInfo = [];
 var submit = [];
 var test = [];
@@ -235,7 +236,7 @@ function getauth1(session){
 }
 
 function updatess(auth,session) {
-    session.send('upatess');
+    session.send('upatess')
     var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
     auth: auth,

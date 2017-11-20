@@ -2,7 +2,7 @@ let fs = require('fs');
 let readline = require('readline');
 let googleAuth = require('google-auth-library');
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-var TOKEN_DIR ='https://raw.githubusercontent.com/wtfolol/cbot/master/';
+var TOKEN_DIR ='https://rawgit.com/wtfolol/cbot/master/';
 // (process.env.HOME || process.env.HOMEPATH ||
   //process.env.USERPROFILE) + '/desktop/cbot/';
 var TOKEN_PATH = TOKEN_DIR + 'quickstart.json';
