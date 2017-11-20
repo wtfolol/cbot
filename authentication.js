@@ -5,7 +5,7 @@ var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 var TOKEN_DIR =//'https://rawgit.com/wtfolol/cbot/master/';
  (process.env.HOME || process.env.HOMEPATH ||
   process.env.USERPROFILE) + '/desktop/cbot/';
-var TOKEN_PATH = TOKEN_DIR + 'quickstart.json';
+var TOKEN_PATH =require("quickstart.json");
 //const TOKEN_PATH ='./quickstart.json'; //the file which will contain the token
 
 class Authentication {
