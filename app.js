@@ -230,10 +230,12 @@ function getauth(session,submit){
 function getauth1(session){
     authentication.authenticate().then((auth)=>{
         updatess(auth,session);
+        session.send('authen');
       });
 }
 
 function updatess(auth,session) {
+    session.send('upatess');
     var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
     auth: auth,
