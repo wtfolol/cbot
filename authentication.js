@@ -17,7 +17,8 @@ class Authentication {
     });
   }
   getClientSecret(){
-    return require(TOKEN_DIR+"client_secret.json");
+    //return require("https://rawgit.com/wtfolol/cbot/master/client_secret.json");
+    return require("./client_secret.json");
   }
   authorize(credentials) {
     var clientSecret = credentials.installed.client_secret;
