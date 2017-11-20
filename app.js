@@ -4,7 +4,7 @@ var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 let authentication =//'https://rawgit.com/wtfolol/cbot/master/authentication.js'; 
 require("./authentication");
-var msg = require('./Messages.js');
+var msg = require("./Message.js")
 var bookingInfo = [];
 var submit = [];
 var test = [];
@@ -18,8 +18,6 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 // Create chat bot and listen to messages
 var connector = new builder.ChatConnector({
-
-
     appId: '311fc6b0-685b-4fd0-b49e-c77e46008777',
     appPassword: '215tbbjeUvDHK0cP1FFs9px'
 
@@ -191,7 +189,7 @@ bot.dialog('greetings', [
 
 bot.dialog('readbooking', 
     function (session) {
-        session.send('read  %s', msg);
+        session.send('read  %s',msg);
         getauth1(session);
     }
 ).triggerAction({
