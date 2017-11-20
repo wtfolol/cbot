@@ -2,7 +2,7 @@ var builder = require('botbuilder');
 var restify = require('restify');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-let authentication ='https://rawgit.com/wtfolol/cbot/master/quickstart.json'; 
+let authentication ='https://rawgit.com/wtfolol/cbot/master/authentication.js'; 
 //require("./authentication");
 var bookingInfo = [];
 var submit = [];
