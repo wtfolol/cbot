@@ -19,6 +19,7 @@ var connector = new builder.ChatConnector({
     appId: '311fc6b0-685b-4fd0-b49e-c77e46008777',
     appPassword: '215tbbjeUvDHK0cP1FFs9px'
 
+
 });
 server.post('/api/messages', connector.listen());
 

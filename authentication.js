@@ -3,7 +3,7 @@ let readline = require('readline');
 let googleAuth = require('google-auth-library');
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-  process.env.USERPROFILE) + '/desktop/cbot/';
+  process.env.USERPROFILE) + './cbot/';
 var TOKEN_PATH = TOKEN_DIR + 'quickstart.json';
 //const TOKEN_PATH ='./quickstart.json'; //the file which will contain the token
 
