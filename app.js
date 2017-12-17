@@ -15,13 +15,10 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-// Create chat bot and listen to messages
+// Create connector and listen for messages
 var connector = new builder.ChatConnector({
-
-
     appId: '311fc6b0-685b-4fd0-b49e-c77e46008777',
     appPassword: '215tbbjeUvDHK0cP1FFs9px'
-
 });
 
 server.post('/api/messages', connector.listen());
@@ -70,6 +67,7 @@ bot.dialog('booking', [
     function (session, results) {
         var slot = builder.EntityRecognizer.parseNumber(results.response); 
         if(!isNaN(slot)){
+            bookingInfo.push(slot);
         session.send('%s slot booked.',slot);
         builder.Prompts.text(session, 'Which set meal you wish to book?'); 
         }
@@ -90,8 +88,6 @@ bot.dialog('booking', [
         session.endDialog('Thanks for booking, our staff will contact you as soon as possible.');    
         getauth(session,bookingInfo);
         }
-        
-    }
 ]).triggerAction({
     matches: 'Restaurant.Book'
 }).cancelAction('cancelReadNote', "Ok.", {
